@@ -23,7 +23,7 @@ public class ConcurrencyTest {
         AtomicInteger maxActive = new AtomicInteger(0);
         CountDownLatch startLatch = new CountDownLatch(1);
         CountDownLatch doneLatch = new CountDownLatch(5);
-        ExecutorService executor = Executors.newFixedThreadPool(5);
+        ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
 
         for (int i = 0; i < 5; i++) {
             executor.submit(() -> {
@@ -61,7 +61,7 @@ public class ConcurrencyTest {
         Track track = new Track("Test Track", Arrays.asList(TrackSegment.STRAIGHT), Weather.SUNNY, 2);
         RaceSimulation sim = new RaceSimulation(Arrays.asList(team1, team2), track, 2);
 
-        ExecutorService executor = Executors.newSingleThreadExecutor();
+        ExecutorService executor = Executors.newSingleThreadExecutor(Thread.ofVirtual().factory());
         Future<?> future = executor.submit(sim::startSimulation);
 
         future.get(20, TimeUnit.SECONDS);

@@ -153,7 +153,7 @@ public class RaceSimulationTest {
         Track track = new Track("Test Track", Arrays.asList(TrackSegment.STRAIGHT), Weather.SUNNY, 5);
         RaceSimulation sim = new RaceSimulation(Arrays.asList(team1), track, 2);
 
-        ExecutorService executor = Executors.newSingleThreadExecutor();
+        ExecutorService executor = Executors.newSingleThreadExecutor(Thread.ofVirtual().factory());
         executor.submit(sim::startSimulation);
 
         Field weatherField = RaceSimulation.class.getDeclaredField("currentWeather");

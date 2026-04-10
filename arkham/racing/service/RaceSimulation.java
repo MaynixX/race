@@ -12,8 +12,8 @@ public class RaceSimulation {
     private final PitStopManager pitStopManager; // ограничивает количество машин в боксе
     private volatile Weather currentWeather; // погода видна всем потокам
     private final Map<Integer, CarState> carStates = new ConcurrentHashMap<>();
-    private final ExecutorService executor = Executors.newCachedThreadPool();
-    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(3);
+    private final ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(3, Thread.ofVirtual().factory());
     private final AtomicInteger simulationTime = new AtomicInteger(0); // время гонки
     private final CountDownLatch raceLatch; // ждем, пока все машины закончат
     private final AtomicInteger totalWeatherChanges = new AtomicInteger(0);
